@@ -1,1 +1,5 @@
-# arxivd
+arxivd
+======
+
+Dependencies
+------------
