@@ -1,0 +1,7 @@
+Usage:
+    arxivd [-h|--help] [-v|--version] [s|--subject=<subject_name>]
+
+Options:
+    -h, --help              Print this help message.
+    -v, --version           Print the current version.
+    -s, --subject=<name>    Only show digests for this subject
