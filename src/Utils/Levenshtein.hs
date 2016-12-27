@@ -1,4 +1,4 @@
-module Levenshtein where
+module Utils.Levenshtein where
 
 import Data.Array
 import Data.Function
