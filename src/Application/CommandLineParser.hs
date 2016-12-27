@@ -3,9 +3,11 @@
 module Application.CommandLineParser where
 
 import Control.Monad (when)
+import Data.List (intercalate)
 import System.Console.Docopt
 import System.Environment (getArgs)
 import System.Exit
+import Utils.Levenshtein (topMatchesN)
 
 programName :: String
 programName = "arxivd"
@@ -28,6 +30,15 @@ processCommandLine usage cmdline = do
     when (args `isPresent` longOption "subject") $ do
         name <- args `getArgOrExit` longOption "subject"
         putStrLn ("Subject: " ++ name)
+
+suggestCorrections :: [String] -> String -> Int -> IO ()
+suggestCorrections ss s n = do
+    let matches = map fst $ topMatchesN ss s n
+    let suffix  = if length matches < 2
+                  then "" ++ head matches
+                  else intercalate ", " (init matches) ++ " or " ++ last matches
+
+    putStrLn $ "Did you mean: " ++ suffix ++ "?"
 
 main :: IO ()
 main = do
