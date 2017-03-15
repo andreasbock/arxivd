@@ -1,7 +1,15 @@
 Usage:
-    arxivd [-h|--help] [-v|--version] [s|--subject=<subject_name>]
+    arxivd [-h|--help] [-v|--version]
+    arxivd [-i|--ignore-case]
+    arxivd [-s|--subjects=<subject_name>] [-p|--published=<date>] [-t|--title=<string>]
 
 Options:
     -h, --help              Print this help message.
     -v, --version           Print the current version.
-    -s, --subject=<name>    Only show digests for this subject
+    -s, --subjects=<name>   Only show digests for this subject
+    -p, --published=<date>  Print all entries published on the
+                            given date
+    -t, --title=<string>    Print all entries whose title contain
+                            part of the given string
+    -i, --ignore-case       Ignore case when filtering on strings
+                            such as titles, subjects or summaries
