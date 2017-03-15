@@ -55,7 +55,7 @@ processPublished _ = currentDate >>= Date
 {-processDate = parseTimeM True defaultTimeLocale "%Y-%m-%d"-}
 
 -- |Process the command line using a given docopt description and a list of strings
-processCommandLine :: Docopt -> [String] -> IO ()
+processCommandLine :: Docopt -> [String] -> IO Options
 processCommandLine usage cmdline = do
     args <- parseArgsOrExit usage cmdline
     let getArgOrExit = getArgOrExitWith usage
@@ -63,9 +63,14 @@ processCommandLine usage cmdline = do
     when (args `isPresent` longOption "help") $ exitWithUsage usage
     when (args `isPresent` longOption "version") $ putStrLn (programName ++ " v" ++ version)
         >> exitSuccess
-    when (args `isPresent` longOption "subject") $ do
-        name <- args `getArgOrExit` longOption "subject"
-        putStrLn ("Subject: " ++ name)
+
+    let processArgWithDefault' = processArgWithDefault args
+    let subjects   = processArgWithDefault' (longOption "subjects") [] processSubjects
+    let published  = processArgWithDefault' (longOption "published") "" processPublished
+    let title      = processArgWithDefault' (longOption "title") "" id
+    let ignoreCase = isPresent args (longOption "ignore-case")
+
+    return $ Options subjects title ignoreCase
 
 suggestCorrections :: [String] -> String -> Int -> IO ()
 suggestCorrections ss s n = do
@@ -79,4 +84,5 @@ suggestCorrections ss s n = do
 main :: IO ()
 main = do
     args <- getArgs
-    processCommandLine usageText args
+    options <- processCommandLine usageText args
+    print options
